@@ -96,9 +96,11 @@ def get_token(username, password, urls = URLS):
     '''
 
     try:
-        _get_token(username, password, urls = URLS)
+        token = _get_token(username, password, urls = URLS)
     except:
         raise ValueError('Login unsuccessful')
+    else:
+        return token
 
 if __name__ == '__main__':
 
