@@ -2,7 +2,7 @@
 #
 # Jeffrey Jose | November 16, 2015
 #
-# UPenn Authentication
+# UPenn/Wharton Authentication
 
 import sys, os
 import re
