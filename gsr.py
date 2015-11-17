@@ -2,7 +2,7 @@
 #
 # Jeffrey Jose | November 16, 2015
 #
-# Wharton GSR API
+# Wharton Group Study Rooms (GSR) API
 
 import sys, os
 import requests
