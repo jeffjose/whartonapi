@@ -41,19 +41,8 @@ def _parse_token(url):
 
     return re.search('token=(\S+)', url).groups()[0]
 
-def auth(username, password, urls = URLS):
-    '''
-    Authenticates username/password combination. 
 
-    Raises ValueError() if the credentials are incorrect
-    '''
-
-    try:
-        token = get_token(username, password, urls)
-    except:
-        raise ValueError("Login unsuccessful")
-
-def get_token(username, password, urls = URLS):
+def _get_token(username, password, urls = URLS):
     '''
     Authenticates using wharton/upenn resource and returns the token
     '''
@@ -88,6 +77,28 @@ def get_token(username, password, urls = URLS):
     token = _parse_token(finalURL)
 
     return token
+
+def auth(username, password, urls = URLS):
+    '''
+    Authenticates username/password combination. 
+
+    Raises ValueError() if the credentials are incorrect
+    '''
+
+    try:
+        token = get_token(username, password, urls)
+    except:
+        raise ValueError("Login unsuccessful")
+
+def get_token(username, password, urls = URLS):
+    '''
+    Authenticates using wharton/upenn resource and returns the token
+    '''
+
+    try:
+        _get_token(username, password, urls = URLS)
+    except:
+        raise ValueError('Login unsuccessful')
 
 if __name__ == '__main__':
 
