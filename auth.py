@@ -109,4 +109,4 @@ if __name__ == '__main__':
     username = raw_input('Enter your UPenn login: ')
     password = getpass.getpass('Password for %s: ' % username)
 
-    auth(username, password)
+    print auth(username, password)
