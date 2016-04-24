@@ -51,9 +51,6 @@ def _get_token(username, password, urls = URLS):
     #
     response = requests.get(urls['auth'])
 
-    # Get Host Cookie from the first location it hits (response.history[0])
-    #hostCookie = _get_cookie(response.history[0].headers['Set-Cookie'], 'BIGipServer') 
-
     # Get Hash Cookie from the final location (response)
     hashCookie = _get_cookie(response.headers['Set-Cookie'], 'cosign')
 
