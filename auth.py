@@ -89,7 +89,7 @@ def auth(username, password, urls = URLS):
         token = get_token(username, password, urls)
     except:
         raise ValueError("Login unsuccessful")
-    finally:
+    else:
         return True
 
 def get_token(username, password, urls = URLS):
