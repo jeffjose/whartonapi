@@ -121,4 +121,4 @@ var auth = function(username, password) {
         
 }
 
-module.exports = auth
+exports.auth = auth
