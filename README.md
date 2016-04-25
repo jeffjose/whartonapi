@@ -64,3 +64,28 @@ ABCDEFGHIJK123456
 ```
 
 ## Javascript
+
+### Install
+
+```sh
+npm install whartonapi
+```
+
+### Use
+```javascript
+var whartonapi = require('whartonapi');
+```
+
+### Authentication
+```javascript
+whartonapi.auth('myusername', 'mypassword')
+  .then(function (response) {
+
+    if(response) {
+        // login was successful
+    } else {
+        // login failed
+    }
+  
+  })
+```
