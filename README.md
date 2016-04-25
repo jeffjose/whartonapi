@@ -1,8 +1,10 @@
 # whartonapi
 
-An API to interact with Wharton Webservices
+An API to interact with Wharton Webservices. whartonapi is available in the following languages
+    - [python](#python)
+    - [javascript](#javascript)
 
-
+## Python
 ### Authentication - auth.py
 
 ##### `auth(username, password)`
@@ -62,3 +64,5 @@ ABCDEFGHIJK123456
 >>> create_reservations(token, reservation_ids)
 >>>
 ```
+
+## Javascript
