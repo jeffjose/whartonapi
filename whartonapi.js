@@ -97,7 +97,6 @@ var get_token = function(username, password) {
         }, 
         function(e){
             var e = new Error('Login unsuccessful');
-            console.log('throwing');
             def.reject(e);
         })
 
