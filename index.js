@@ -121,6 +121,4 @@ var auth = function(username, password) {
         
 }
 
-auth(username, password).then(function(response) {
-    console.log(response)
-})
+module.exports = auth
