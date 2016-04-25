@@ -1,8 +1,6 @@
 # whartonapi
 
-An API to interact with Wharton Webservices. whartonapi is available in the following languages
-    - [python](#python)
-    - [javascript](#javascript)
+An API ([python](#python), [javascript](#javascript)) to interact with Wharton Webservices. 
 
 ## Python
 ### Authentication - auth.py
