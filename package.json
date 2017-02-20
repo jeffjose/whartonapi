@@ -23,6 +23,7 @@
   "homepage": "https://github.com/jeffjose/whartonapi#readme",
   "dependencies": {
     "deferred": "^0.7.5",
+    "request": "^2.79.0",
     "unirest": "^0.4.2"
   }
 }

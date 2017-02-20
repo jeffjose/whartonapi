@@ -1,4 +1,4 @@
-var unirest = require('unirest');
+var request = require('request');
 var deferred = require('deferred');
 
 var URLS = {
@@ -11,7 +11,7 @@ var _get_token = function(username, password) {
 
     var def = deferred()
 
-     unirest.get(URLS.auth).end(function (response) {
+     request.get(URLS.auth, function (data, response) {
         var set_cookie = response.headers['set-cookie'][0];
 
         var cosign = set_cookie.match(/(cosign\S*).*/)[1];
@@ -35,11 +35,15 @@ var _get_token = function(username, password) {
 
 var _send_login_info = function (login_data, cosign, def) {
 
-    unirest.post(URLS.login)
-        .headers({ 'Cookie': cosign })
-        .followRedirect(false)
-        .send(login_data)
-        .end(function(response) {
+    options = {
+        'uri': URLS.login,
+        'headers': {'Cookie': cosign},
+        'followRedirect': false,
+        'form': login_data,
+        'json': true
+    }
+
+    request.post(options, function(data, response) {
 
             try {
                 index = response.rawHeaders.indexOf('Set-Cookie');
@@ -51,10 +55,17 @@ var _send_login_info = function (login_data, cosign, def) {
             }
             cookies = response.rawHeaders[index + 1];
 
-            unirest.get(response.headers.location)
-                .headers({ 'Cookie': cookies })
-                .followRedirect(false)
-                .end(function(response) {
+            args = {
+                'Cookie': cookies,
+            }
+
+            options = {
+                'uri': response.headers.location,
+                'headers': {'Cookie': cookies},
+                'followRedirect': false,
+            }
+
+            request.get(options, function(data, response) {
 
                 try {
                     index = response.rawHeaders.indexOf('Set-Cookie');
@@ -66,15 +77,18 @@ var _send_login_info = function (login_data, cosign, def) {
 
                     cookies = response.rawHeaders[index + 1]
 
-                    unirest.get(response.headers.location)
-                        .headers({ 'Cookie': cookies })
-                        .followRedirect(false)
-                        .end(function(response) {
+                    options = {
+                        'uri': response.headers.location,
+                        'headers': {'Cookie': cookies},
+                        'followRedirect': false
+                    }
+
+                    request.get(options, function(data, response) {
 
                             token =  _parse_token(response.headers.location)
                             def.resolve(token)
                         })
-                
+
                 })
         })
 }
@@ -94,7 +108,7 @@ var get_token = function(username, password) {
 
             def.resolve(res);
 
-        }, 
+        },
         function(e){
             var e = new Error('Login unsuccessful');
             def.reject(e);
@@ -117,7 +131,7 @@ var auth = function(username, password) {
     })
 
     return def.promise()
-        
+
 }
 
 exports.auth = auth
