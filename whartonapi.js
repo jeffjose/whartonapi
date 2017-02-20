@@ -1,4 +1,4 @@
-var request = require('request');
+var request = require('superagent');
 var deferred = require('deferred');
 
 var URLS = {
@@ -11,7 +11,7 @@ var _get_token = function(username, password) {
 
     var def = deferred()
 
-     request.get(URLS.auth, function (data, response) {
+     request.get(URLS.auth).end(function (err, response) {
         var set_cookie = response.headers['set-cookie'][0];
 
         var cosign = set_cookie.match(/(cosign\S*).*/)[1];
@@ -35,57 +35,39 @@ var _get_token = function(username, password) {
 
 var _send_login_info = function (login_data, cosign, def) {
 
-    options = {
-        'uri': URLS.login,
-        'headers': {'Cookie': cosign},
-        'followRedirect': false,
-        'form': login_data,
-        'json': true
-    }
+    request.post(URLS.login)
+        .set('Cookie', cosign)
+        .type('form')
+        .send(login_data)
+        .redirects(0)
+        .end(function(err, response) {
 
-    request.post(options, function(data, response) {
+            cookies = response.headers['set-cookie']
 
-            try {
-                index = response.rawHeaders.indexOf('Set-Cookie');
-            }
-            catch(e) {
-                def.reject(e);
+            if (!response.headers.location) {
+                def.reject(err);
                 return
-
-            }
-            cookies = response.rawHeaders[index + 1];
-
-            args = {
-                'Cookie': cookies,
             }
 
-            options = {
-                'uri': response.headers.location,
-                'headers': {'Cookie': cookies},
-                'followRedirect': false,
-            }
+            request.get(response.headers.location)
+                .set('Cookie', cookies)
+                .redirects(0)
+                .end(function(err, response) {
 
-            request.get(options, function(data, response) {
+                    cookies = response.headers['set-cookie']
 
-                try {
-                    index = response.rawHeaders.indexOf('Set-Cookie');
-                }
-                catch(e) {
-                    def.reject(e);
-                    return
-                }
-
-                    cookies = response.rawHeaders[index + 1]
-
-                    options = {
-                        'uri': response.headers.location,
-                        'headers': {'Cookie': cookies},
-                        'followRedirect': false
+                    if (!cookies) {
+                        def.reject(err);
+                        return
                     }
 
-                    request.get(options, function(data, response) {
+                    request.get(response.headers.location)
+                        .set('Cookie', cookies)
+                        .redirects(0)
+                        .end(function(err, response) {
 
                             token =  _parse_token(response.headers.location)
+
                             def.resolve(token)
                         })
 

@@ -23,6 +23,6 @@
   "homepage": "https://github.com/jeffjose/whartonapi#readme",
   "dependencies": {
     "deferred": "^0.7.5",
-    "request": "^2.79.0"
+    "superagent": "^3.4.4"
   }
 }
